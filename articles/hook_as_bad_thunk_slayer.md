@@ -1,4 +1,10 @@
-# 駄目になった Redux Thunk を hooks でリファクタリングする
+---
+title: "駄目になった Redux Thunk を hooks でリファクタリングする"
+emoji: "🔪"
+type: "tech"
+topics: ["React", "Redux"]
+published: true
+---
 
 この記事は [React Advent Calendar 13日目](https://qiita.com/advent-calendar/2019/react)の記事です。
 
