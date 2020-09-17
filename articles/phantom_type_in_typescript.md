@@ -1,4 +1,10 @@
-# TypeScript で幽霊型っぽいものをつくる
+---
+title: "TypeScript で幽霊型っぽいものをつくる"
+emoji: "👻"
+type: "tech"
+topics: ["TypeScript"]
+published: true
+---
 
 TypeScript で幽霊型（Phantom Type）っぽいものを作る場合に必要なテクニックを紹介する。
 
