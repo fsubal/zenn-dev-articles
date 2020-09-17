@@ -1,10 +1,12 @@
 ---
-title: "[PHP] DateTimeImmutable::diff を返す関数のテストで DateInterval を new すると assertEqual がコケて困る件"
+title: "DateTimeImmutable::diff を返す関数のテストで DateInterval を new するとコケる"
 emoji: "📆"
 type: "tech"
 topics: ["PHP", "PHPUnit"]
 published: true
 ---
+
+# DateTimeImmutable::diff を返す関数のテストで DateInterval を new すると assertEqual がコケて困る件
 
 日付同士の差分を計算する際に `DateTimeImmutable::diff()`（あるいは `DateTime::diff()` ）を用いることがあると思います。
 
