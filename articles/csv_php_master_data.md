@@ -1,3 +1,11 @@
+---
+title: "CSV から PHP の連想配列を作って実運用する話"
+emoji: "🐘"
+type: "tech"
+topics: ["PHP", "CSV"]
+published: true
+---
+
 # CSV から PHP の連想配列を作って実運用する話
 
 [ピクシブ株式会社 AdventCalendar 2017 11日目の記事](https://qiita.com/advent-calendar/2017/pixiv)です。
