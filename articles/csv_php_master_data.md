@@ -6,7 +6,6 @@ topics: ["PHP", "CSV"]
 published: true
 ---
 
-
 [ピクシブ株式会社 AdventCalendar 2017 11日目の記事](https://qiita.com/advent-calendar/2017/pixiv)です。
 
 エンジニアの @fsubal です。普段は[イラストコミュニケーションサービス pixiv](https://www.pixiv.net/)で主に投稿者向けの機能開発を行っています。
@@ -478,4 +477,3 @@ public function test_小カテゴリが正しい形式をしているか($_group
 **[ピクシブ株式会社](https://www.pixiv.co.jp/)** ではクリエイターに向けてサービスを作っていきたいエンジニアを随時募集しています！
 
 明日は @kana1 が Vim script を用いた大規模なリファクタリングの知見を書いてくれます！お楽しみに。
-
