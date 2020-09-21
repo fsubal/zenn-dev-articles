@@ -3,7 +3,7 @@ title: "bivarianceHack とは何か、なぜ必要なのか"
 emoji: "🔧"
 type: "tech"
 topics: ["TypeScript"]
-published: false
+published: true
 ---
 
 
@@ -103,7 +103,7 @@ TypeScript に bivarianceHack と呼ばれるテクニックがある。
 それでも配列を共変として扱いたい場合、型システム上に何らかのごまかしというか、一種の妥協が必要になる。
 （ちなみに、型システム上にこの意味でのごまかしが存在しないことを「健全性（soundness）」と呼ぶと理解している）
 
-そこで双変（bivariance）が登場する。
+そこで**双変（bivariance）**が登場する。
 双変とは、型 A が型 B のサブタイプであるとき、P<A> を P<B> に代入しても許されるし、逆に P<B> を P<A> に代入しても許されるといった関係のことを指す。
 何を代入しても許すほどゆるくはないが（たとえば全く親子関係にない null を P<A> に代入したらエラーになるとかは当然起きる）、親子関係にあれば何でもいいという点で厳密性がない。
 
@@ -137,7 +137,9 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html
 
 時折、メソッドと関数の区別はクラス記法や `interface` を使ったときのみ発生すると勘違いしている人がいるが、そんなことはなく `type` 記法を使っていてもこの問題は存在する。
 
-実は `strictFunctionTypes` 導入にあたり、メソッドを含めあらゆる関数を反変にするか議論が行われたことがあるらしい（残念ながらどの Issue か見つけられてません！どなたかご存知でしたらお寄せください）。
+実は `strictFunctionTypes` 導入にあたり、メソッドを含めあらゆる関数を反変にするか議論が行われたことがあるらしい
+（残念ながらどの Issue か見つけられてません！どなたかご存知でしたらお寄せください）
+
 が、それをやるとクラスの継承を行っている箇所が軒並みエラーになるなどの理由から頓挫し、「メソッド」と「関数」で変性が異なるというこの奇妙な挙動が生まれることとなった。
 
 ### 関数の型を意図的に双変にする方法としての bivarianceHack
@@ -164,9 +166,7 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html
 ### bivarianceHack のユースケース
 
 しかしこんなもの一体いつ使うのか？
-そもそも（あまり健全ではないが） bivariance に依存したいユースケースとして次のようなイベントハンドラのケースがある。
-（冒頭の React の件も EventHandler に関わっていたことを思い出すと良い）
-
+そもそも（あまり健全ではないが） bivariance に依存したいユースケースとして次のようなケースがある。
 `--strictFunctionTypes` が無効な状態で次の React コンポーネントが定義されているとする。
 
 ```typescript
@@ -189,7 +189,8 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html
  )
 ```
 
-この定義は健全ではない。コンパイラからすれば、`nextValue` として `a` でも `b` でも `c` でもない文字列が渡ってくるかもしれないからだ。それでもこれは（ `strictFunctionTypes` がなかった頃の TypeScript では ）通ってしまっていた。
+この定義は健全ではない。コンパイラからすれば、`nextValue` として `a` でも `b` でも `c` でもない文字列が渡ってくるかもしれないからだ。
+それでもこれは（ `strictFunctionTypes` がなかった頃の TypeScript では ）通ってしまっていた。
 
 この状態で、あなたはコードベース全体を `strict: true` に移行するリファクタリングを行いたいとする。
 そして `strictFunctionTypes` を有効にした途端、このあたりのコードはコケるようになった。
@@ -197,17 +198,18 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html
 本当は Props の型定義を健全になるように書き換えていくのが筋ではあるが、これの利用箇所（あるいは似たようなことをしているコンポーネント）があまりにも多く、それが厳しかったとしよう。
 
 ```typescript
- interface Props {
- 	value: string
- 	
- 	// FIXME: `strict: true` にする過程で、むりやり双変を維持している
- 	onChange?: Bivariant<(nextValue: string) => void>
- }
+interface Props {
+	value: string
+
+	// FIXME: `strict: true` にする過程で、むりやり双変を維持している
+	onChange?: Bivariant<(nextValue: string) => void>
+}
  
- export const SomeInput: React.FC<Props> = () => { ... }
+export const SomeInput: React.FC<Props> = () => { ... }
 ```
 
-これで一旦通るようになった。もちろん最終的にここは直すべき印ではあるが、機械的な移行過程で一時的にこういう変更をすることができる（ 治すべきところを探すときは `Bivariant<T>`  の利用箇所を探れば良い ）というわけだ。
+これで一旦通るようになった。もちろん最終的にここは直すべき印ではあるが、
+機械的な移行過程で一時的にこういう変更をすることができる（ 治すべきところを探すときは `Bivariant<T>`  の利用箇所を探れば良い ）というわけだ。
 
 ### まとめ
 
